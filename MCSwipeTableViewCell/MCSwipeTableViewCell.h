@@ -9,22 +9,22 @@
 @class MCSwipeTableViewCell;
 
 typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellState){
-    MCSwipeTableViewCellStateNone = 0,
-    MCSwipeTableViewCellState1,
-    MCSwipeTableViewCellState2,
-    MCSwipeTableViewCellState3,
-    MCSwipeTableViewCellState4
+  MCSwipeTableViewCellStateNone = 0,
+  MCSwipeTableViewCellState1,
+  MCSwipeTableViewCellState2,
+  MCSwipeTableViewCellState3,
+  MCSwipeTableViewCellState4
 };
 
 typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection){
-    MCSwipeTableViewCellDirectionLeft = 0,
-    MCSwipeTableViewCellDirectionCenter,
-    MCSwipeTableViewCellDirectionRight
+  MCSwipeTableViewCellDirectionLeft = 0,
+  MCSwipeTableViewCellDirectionCenter,
+  MCSwipeTableViewCellDirectionRight
 };
 
 typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellMode){
-    MCSwipeTableViewCellModeExit = 0,
-    MCSwipeTableViewCellModeSwitch
+  MCSwipeTableViewCellModeExit = 0,
+  MCSwipeTableViewCellModeSwitch
 };
 
 @protocol MCSwipeTableViewCellDelegate <NSObject>
@@ -50,7 +50,14 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellMode){
 
 @property(nonatomic, assign) MCSwipeTableViewCellMode mode;
 @property(nonatomic, assign) BOOL isDragging;
-@property(nonatomic, assign) BOOL shouldDrag;
+
+// JM: Added variables to give more customization options to developers.
+@property(nonatomic, assign) BOOL shouldDragLeft;
+@property(nonatomic, assign) BOOL shouldDragRight;
+@property(nonatomic, assign) BOOL numberOfBounces; // 0-2
+@property(nonatomic, strong) UIColor* defaultColor;
+@property(nonatomic, assign) CGFloat stop1;
+@property(nonatomic, assign) CGFloat stop2;
 
 - (id)initWithStyle:(UITableViewCellStyle)style
     reuseIdentifier:(NSString *)reuseIdentifier
