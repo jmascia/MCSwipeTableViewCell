@@ -46,6 +46,9 @@ The switch mode (`MCSwipeTableViewCellModeSwitch`) is a new behavior I'm introdu
     // We need to set a background to the content view of the cell
     [cell.contentView setBackgroundColor:[UIColor whiteColor]];
     
+    // Setting the default inactive state color to the tableView background color
+    [cell setDefaultColor:self.tableView.backgroundView.backgroundColor];
+    
     // Setting the type of the cell
 	[cell setMode:MCSwipeTableViewCellModeExit];
     
@@ -64,10 +67,15 @@ MCSwipeTableViewCell has a delegate to retrieve the cell/state/mode of the trigg
 ```objc
 #pragma mark - MCSwipeTableViewCellDelegate
 
-- (void)swipeTableViewCell:(MCSwipeTableViewCell *)cell didTriggerState:(MCSwipeTableViewCellState)state withMode:(MCSwipeTableViewCellMode)mode
-{
-    NSLog(@"IndexPath : %@ - MCSwipeTableViewCellState : %d - MCSwipeTableViewCellMode : %d", [self.tableView indexPathForCell:cell], state, mode);
-}
+// When the user starts swiping the cell this method is called
+- (void)swipeTableViewCellDidStartSwiping:(MCSwipeTableViewCell *)cell;
+
+// When the user is dragging, this method is called and return the dragged percentage from the border
+- (void)swipeTableViewCell:(MCSwipeTableViewCell *)cell didSwipWithPercentage:(CGFloat)percentage;
+
+// When the user releases the cell, after swiping it, this method is called
+- (void)swipeTableViewCell:(MCSwipeTableViewCell *)cell didEndSwipingSwipingWithState:(MCSwipeTableViewCellState)state mode:(MCSwipeTableViewCellMode)mode;
+
 ```
 
 ###Deleting cells in Exit mode
@@ -102,11 +110,32 @@ For instance if you only want to have two states out of four:
 			 fourthIconName:nil
 				fourthColor:nil];
 ```
+Also you can set modes per state. Non-set states will use the default mode set by `-setMode:` method.
+
+```objc
+[cell setModeForState1:MCSwipeTableViewCellModeSwitch];
+[cell setModeForState3:MCSwipeTableViewCellModeSwitch];
+```
+
+You can set the color of background, apart from state colors, which will be visible just before triggering a state.
+
+```objc
+cell.defaultColor = [UIColor darkGrayColor];
+```
+
+You can choose if the icons should animate or not.
+
+```objc
+// If set NO, the icons will be standing where they appear
+// Otherwise, they will be moving along the cell
+cell.animatesIcons = NO;
+```
+
 ##Consideration
 This library is not compatible with auto-layout so you will need to disable auto-layout in your xib properties.
 
 ##Requirements
-- iOS >= 5.0
+- iOS >= 5.0 (iOS 7 compatible)
 - ARC
 
 ## Contact
