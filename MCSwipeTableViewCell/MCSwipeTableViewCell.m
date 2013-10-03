@@ -204,65 +204,65 @@ secondStateIconName:(NSString *)secondIconName
     } else {
       [self.contentView setCenter:center];
     }
-
+    
     [self animateWithOffset:CGRectGetMinX(self.contentView.frame)];
     [gesture setTranslation:CGPointZero inView:self];
-
-    	// Notifying the delegate that we are dragging with an offset percentage
-        if ([_delegate respondsToSelector:@selector(swipeTableViewCell:didSwipWithPercentage:)]) {
-            [_delegate swipeTableViewCell:self didSwipWithPercentage:percentage];
-        }
-	}
     
-    else if (state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateCancelled) {
-        _isDragging = NO;
-        
-        _currentImageName = [self imageNameWithPercentage:percentage];
-        _currentPercentage = percentage;
-        
-        // Current state
-        MCSwipeTableViewCellState cellState = [self stateWithPercentage:percentage];
-        
-        // Current mode
-        MCSwipeTableViewCellMode cellMode;
-        
-        if (cellState == MCSwipeTableViewCellState1 && self.modeForState1 != MCSwipeTableViewCellModeNone) {
-            cellMode = self.modeForState1;
-        } else if (cellState == MCSwipeTableViewCellState2 && self.modeForState2 != MCSwipeTableViewCellModeNone) {
-            cellMode = self.modeForState2;
-        } else if (cellState == MCSwipeTableViewCellState3 && self.modeForState3 != MCSwipeTableViewCellModeNone) {
-            cellMode = self.modeForState3;
-        } else if (cellState == MCSwipeTableViewCellState4 && self.modeForState4 != MCSwipeTableViewCellModeNone) {
-            cellMode = self.modeForState4;
-        } else {
-            cellMode = self.mode;
-        }
-        
-        if (cellMode == MCSwipeTableViewCellModeExit && _direction != MCSwipeTableViewCellDirectionCenter && [self validateState:cellState])
-            [self moveWithDuration:animationDuration andDirection:_direction];
-        else
-            [self bounceToOrigin];
+    // Notifying the delegate that we are dragging with an offset percentage
+    if ([_delegate respondsToSelector:@selector(swipeTableViewCell:didSwipWithPercentage:)]) {
+      [_delegate swipeTableViewCell:self didSwipWithPercentage:percentage];
     }
+	}
+  
+  else if (state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateCancelled) {
+    _isDragging = NO;
+    
+    _currentImageName = [self imageNameWithPercentage:percentage];
+    _currentPercentage = percentage;
+    
+    // Current state
+    MCSwipeTableViewCellState cellState = [self stateWithPercentage:percentage];
+    
+    // Current mode
+    MCSwipeTableViewCellMode cellMode;
+    
+    if (cellState == MCSwipeTableViewCellState1 && self.modeForState1 != MCSwipeTableViewCellModeNone) {
+      cellMode = self.modeForState1;
+    } else if (cellState == MCSwipeTableViewCellState2 && self.modeForState2 != MCSwipeTableViewCellModeNone) {
+      cellMode = self.modeForState2;
+    } else if (cellState == MCSwipeTableViewCellState3 && self.modeForState3 != MCSwipeTableViewCellModeNone) {
+      cellMode = self.modeForState3;
+    } else if (cellState == MCSwipeTableViewCellState4 && self.modeForState4 != MCSwipeTableViewCellModeNone) {
+      cellMode = self.modeForState4;
+    } else {
+      cellMode = self.mode;
+    }
+    
+    if (cellMode == MCSwipeTableViewCellModeExit && _direction != MCSwipeTableViewCellDirectionCenter && [self validateState:cellState])
+      [self moveWithDuration:animationDuration andDirection:_direction];
+    else
+      [self bounceToOrigin];
+  }
 }
 
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    if ([gestureRecognizer class] == [UIPanGestureRecognizer class]) {
-        
-        UIPanGestureRecognizer *g = (UIPanGestureRecognizer *)gestureRecognizer;
-        CGPoint point = [g velocityInView:self];
-        
-        if (fabsf(point.x) > fabsf(point.y) ) {
-            
-            // We notify the delegate that we just started dragging
-            if ([_delegate respondsToSelector:@selector(swipeTableViewCellDidStartSwiping:)]) {
-                [_delegate swipeTableViewCellDidStartSwiping:self];
-            }
-            
-            return YES;
-        }
+  if ([gestureRecognizer class] == [UIPanGestureRecognizer class]) {
+    
+    UIPanGestureRecognizer *g = (UIPanGestureRecognizer *)gestureRecognizer;
+    CGPoint point = [g velocityInView:self];
+    
+    if (fabsf(point.x) > fabsf(point.y) ) {
+      
+      // We notify the delegate that we just started dragging
+      if ([_delegate respondsToSelector:@selector(swipeTableViewCellDidStartSwiping:)]) {
+        [_delegate swipeTableViewCellDidStartSwiping:self];
+      }
+      
+      return YES;
     }
   }
+
   return NO;
 }
 
@@ -320,6 +320,7 @@ secondStateIconName:(NSString *)secondIconName
   
   return imageName;
 }
+
 - (CGFloat)imageAlphaWithPercentage:(CGFloat)percentage {
   CGFloat alpha;
   
@@ -334,8 +335,8 @@ secondStateIconName:(NSString *)secondIconName
     else if (percentage < 0 && percentage > -_stop1)
       alpha = fabsf(percentage / _stop1);
     else alpha = 1.0;
-    
-    return alpha;
+  }
+  return alpha;
 }
 
 - (UIColor *)colorWithPercentage:(CGFloat)percentage {
@@ -473,8 +474,8 @@ secondStateIconName:(NSString *)secondIconName
     else {
       return;
     }
-    
-    
+  }
+  
     slidingImageRect = CGRectMake(position.x - slidingImageSize.width / 2.0,
                                   position.y - slidingImageSize.height / 2.0,
                                   slidingImageSize.width,
@@ -611,7 +612,6 @@ secondStateIconName:(NSString *)secondIconName
             [_delegate swipeTableViewCell:self didEndSwipingSwipingWithState:state mode:mode];
         }
     }
-  }
 }
 
 @end
